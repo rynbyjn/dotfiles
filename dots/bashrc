@@ -1,5 +1,4 @@
 eval "$(rbenv init -)"
-eval "$(exenv init -)"
 
 # Environment pathing and editor defaults
 export PATH="/usr/local/bin:/usr/local/heroku/bin:$PATH"
@@ -76,7 +75,7 @@ parse_git_branch() {
 }
 
 parse_versions() {
-  echo " [rb:$(rbenv version-name)|ex:$(exenv version-name)]"
+  echo " [rb:$(rbenv version-name)|node:$(nvm current)]"
 }
 
 settitle() {
