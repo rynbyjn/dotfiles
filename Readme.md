@@ -56,6 +56,10 @@ fix this for the next time you launch vim.
 
 ### GPG (Optional)
 
+First you will need to generate a GPG key and add it to your github settings
+from [here](https://help.github.com/articles/generating-a-new-gpg-key/). Will
+also require you to install gnupg via homebrew `brew install gnupg`.
+
 You will need to install GPG Keychain for GPG signing to happen automatically.
 See [GPG Tools](https://gpgtools.org/) for more information. There are ways to
 do this through homebrew, but the setup is a bit much. To obtain your GPG
