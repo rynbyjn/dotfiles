@@ -41,6 +41,7 @@ Plug 'tpope/vim-haml'
 Plug 'tpope/vim-rails'
 
 " Utility
+Plug 'ngmy/vim-rubocop'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 
@@ -254,7 +255,7 @@ if has("autocmd")
     autocmd BufRead,BufNewFile .{babel,eslint}rc set filetype=json
     autocmd BufRead,BufNewFile *.{flow} set filetype=javascript
     autocmd BufRead,BufNewFile Dangerfile set filetype=ruby
-    autocmd BufRead,BufNewFile *.hamlc set filetype=haml
+    autocmd BufRead,BufNewFile *.{hamlc,slim} set filetype=haml
 
     " vim-go keybindings
     autocmd FileType go nmap <leader>r <Plug>(go-run)
@@ -273,6 +274,7 @@ if has("autocmd")
 
     " Abbreviations
     autocmd FileType css iabbrev <buffer> bgc background-color:
+    autocmd FileType coffee iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
     autocmd FileType javascript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
   augroup END
 endif
