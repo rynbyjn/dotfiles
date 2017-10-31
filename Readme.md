@@ -85,6 +85,12 @@ by opening up GPG Keychain and doing these steps:
   program = /usr/local/bin/gpg
 ```
 
+### GPG (Without GPG Tools)
+
+- `brew install gnupg gpg-agent pinentry-mac`
+- add `pinentry-program /usr/local/bin/pinentry-mac` in ~/.gnupg/gpg-agent.conf
+- add the git config from above
+
 ### Install Polarized terminal themes
 
 Included in the vimrc is `Plug mkitt/pigment`. This is the color settings for
