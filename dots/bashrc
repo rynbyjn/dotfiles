@@ -74,8 +74,10 @@ parse_git_branch() {
   __git_ps1 " [%s]"
 }
 
+# displaying the current node version slows down reload
+# |node:$(nvm current)
 parse_versions() {
-  echo " [rb:$(rbenv version-name)|node:$(nvm current)]"
+  echo " [rb:$(rbenv version-name)]"
 }
 
 settitle() {
