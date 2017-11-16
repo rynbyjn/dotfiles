@@ -38,6 +38,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-rails'
 
@@ -150,6 +151,11 @@ let g:qfenter_keymap.vopen = ['<C-v>']
 let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
 let g:qfenter_keymap.topen = ['<C-t>']
 
+let g:syntastic_error_symbol = "✗"
+let syntastic_style_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+let syntastic_style_warning_symbol = "⚠"
+
 let g:syntastic_auto_loc_list=1
 let g:syntastic_aggregate_errors=1
 let g:syntastic_always_populate_loc_list=1
@@ -165,8 +171,13 @@ if executable('eslint_d')
   let g:syntastic_javascript_eslint_exec='eslint_d'
 endif
 
-let g:syntastic_typescript_checkers = ['tslint', 'tsc']
-let g:syntastic_typescript_tslint_args="-p tsconfig.json"
+let g:syntastic_typescript_checkers = ['tslint']
+if executable('node_modules/.bin/tslint')
+  let g:syntastic_typescript_tslint_exec='node_modules/.bin/tslint'
+endif
+
+let g:syntastic_coffee_checkers=['coffeelint', 'coffee']
+let g:syntastic_coffee_coffeelint_args = "--file .coffeelint.json"
 
 let g:syntastic_ruby_checkers=['rubocop']
 let g:vimrubocop_config = '.rubocop.yml'
@@ -263,6 +274,7 @@ if has("autocmd")
     autocmd BufRead,BufNewFile *.{flow} set filetype=javascript
     autocmd BufRead,BufNewFile Dangerfile set filetype=ruby
     autocmd BufRead,BufNewFile *.{hamlc,slim} set filetype=haml
+    autocmd BufRead,BufNewFile *.tsx,*.jsx set filetype=typescript.jsx
 
     " vim-go keybindings
     autocmd FileType go nmap <leader>r <Plug>(go-run)
@@ -281,7 +293,7 @@ if has("autocmd")
 
     " Abbreviations
     autocmd FileType css iabbrev <buffer> bgc background-color:
-    autocmd FileType coffeescript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
+    autocmd FileType coffee iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
     autocmd FileType javascript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
     autocmd FileType typescript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
   augroup END
