@@ -172,6 +172,7 @@ if executable('eslint_d')
 endif
 
 let g:syntastic_typescript_checkers = ['tslint']
+let g:syntastic_typescript_tslint_args="-c .tslint.json -p tsconfig.json -e node_modules"
 if executable('node_modules/.bin/tslint')
   let g:syntastic_typescript_tslint_exec='node_modules/.bin/tslint'
 endif
