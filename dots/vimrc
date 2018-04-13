@@ -11,7 +11,6 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'ervandew/supertab'
 Plug 'henrik/vim-indexed-search'
 Plug 'mhinz/vim-grepper'
-Plug 'mhinz/vim-startify'
 Plug 'mkitt/pigment'
 Plug 'mkitt/tabline.vim'
 Plug 'nelstrom/vim-visual-star-search'
@@ -29,13 +28,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 
 " Filetypes
-Plug 'derekwyatt/vim-scala'
-Plug 'elixir-lang/vim-elixir'
-Plug 'fatih/vim-go'
-Plug 'hashivim/vim-terraform'
 Plug 'jparise/vim-graphql'
 Plug 'kchmck/vim-coffee-script'
-Plug 'keith/swift.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
@@ -64,7 +58,6 @@ syntax enable
 " -----------------------------------------------------------------------------
 set autoindent
 set autoread
-set autowrite
 set backspace=2
 set clipboard=unnamed
 set complete-=i
@@ -128,6 +121,20 @@ if executable('rg')
   let g:ctrlp_use_caching=0
 endif
 
+let g:ale_completion_delay=666
+let g:ale_completion_enabled=1
+let g:ale_completion_max_suggestions=10
+let g:ale_fix_on_save=1
+let g:ale_fixers={'typescript': ['tslint']}
+let g:ale_history_log_output=0
+let g:ale_lint_on_text_changed='never'
+let g:ale_linters={'html': ['tidy']}
+let g:ale_open_list='on_save'
+let g:ale_sign_error='☠️'
+let g:ale_sign_warning='⚠️'
+let g:ale_typescript_tslint_use_global=1
+let g:ale_typescript_tsserver_use_global=1
+
 let g:ctrlp_by_filename=1
 let g:ctrlp_extensions=['line']
 let g:ctrlp_cache_dir=$HOME.'/.vim/tmp/ctrlp/'
@@ -136,54 +143,30 @@ let g:ctrlp_map='<F1>'
 
 let g:ctrlsf_auto_close=0
 
-let g:netrw_liststyle=3
+let g:indexed_search_colors=0
+
+let g:jsx_ext_required=0
 
 let g:NERDTreeWinSize=40
 let g:NERDTreeMinimalUI=1
 let g:NERDTreeAutoDeleteBuffer=1
 let g:NERDTreeMapUpdir='-'
 
-let g:SuperTabLongestEnhanced=1
-let g:SuperTabLongestHighlight=1
+let g:netrw_liststyle=3
 
-" Open quick fix and location window items with CtrlP commands
 let g:qfenter_enable_autoquickfix=0
 let g:qfenter_keymap = {}
 let g:qfenter_keymap.vopen = ['<C-v>']
 let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
 let g:qfenter_keymap.topen = ['<C-t>']
 
-let g:ale_fix_on_save = 1
-let g:ale_fixers = {'javascript': ['eslint', 'trim_whitespace'], 'typescript': ['tslint', 'trim_whitespace']}
-let g:ale_history_log_output = 0
-let g:ale_javascript_eslint_executable = 'eslint_d'
-let g:ale_javascript_eslint_use_global = 1
+let g:SuperTabLongestEnhanced=1
+let g:SuperTabLongestHighlight=1
 
-let g:ale_typescript_tslint_use_global = 1
-let g:ale_typescript_tsserver_use_global = 1
-
-let g:ale_lint_delay = 666
-let g:ale_open_list = 'on_save'
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '☠️'
-let g:ale_sign_warning = '⚠️'
-
-let g:vimrubocop_config = '.rubocop.yml'
-
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers['typescript'] = ['.']
+let g:vimrubocop_config='.rubocop.yml'
 
 let g:yankring_window_height=10
 let g:yankring_history_dir=$HOME.'/.vim/tmp/yankring/'
-
-let g:indexed_search_show_index_mappings=0
-let g:indexed_search_colors=0
-
-let g:javascript_enable_domhtmlcss=1
-let g:jsx_ext_required=0
-
 
 " Mappings
 " -----------------------------------------------------------------------------
@@ -255,33 +238,19 @@ if has("autocmd")
     autocmd!
     autocmd User Grepper :resize 10
     autocmd QuickFixCmdPost *grep* botright copen
-    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
     autocmd FileType markdown,text,txt setlocal tw=80 linebreak nolist wrap spell
+    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
     autocmd BufRead,BufNewFile .{babel,eslint}rc set filetype=json
+    autocmd BufRead,BufNewFile .env.* set filetype=sh
     autocmd BufRead,BufNewFile *.{flow} set filetype=javascript
     autocmd BufRead,BufNewFile Dangerfile set filetype=ruby
     autocmd BufRead,BufNewFile *.{hamlc,slim} set filetype=haml
     autocmd BufRead,BufNewFile *.tsx,*.jsx set filetype=typescript.jsx
 
-    " vim-go keybindings
-    autocmd FileType go nmap <leader>r <Plug>(go-run)
-    autocmd FileType go nmap <leader>b <Plug>(go-build)
-    autocmd FileType go nmap <leader>t <Plug>(go-test)
-    autocmd FileType go nmap <leader>c <Plug>(go-coverage)
-    autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
-    autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-    autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
-    autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
-    autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-    autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-    autocmd FileType go nmap <Leader>s <Plug>(go-implements)
-    autocmd FileType go nmap <Leader>i <Plug>(go-info)
-    autocmd FileType go nmap <Leader>e <Plug>(go-rename)
-
     " Abbreviations
-    autocmd FileType css iabbrev <buffer> bgc background-color:
-    autocmd FileType coffee iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
+    autocmd FileType javascript iabbrev <buffer> bgc backgroundColor: '',<Left><Left><C-R>=Eatchar('\s')<CR>
+    autocmd FileType typescript iabbrev <buffer> bgc backgroundColor: '',<Left><Left><C-R>=Eatchar('\s')<CR>
     autocmd FileType javascript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
     autocmd FileType typescript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
   augroup END
