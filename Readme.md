@@ -1,7 +1,7 @@
-
 &hearts; the Vim.
 
 ## Fresh install
+
 **Warning this will blow away any vim/bash setups you have currently. You may
 want to back up existing files.**
 
@@ -13,8 +13,10 @@ want to back up existing files.**
 - In a terminal window cd to the dotfiles directory and run `bin/install world`
 - A helpful way to reload the terminal once the dotfiles are installed and terminal has been relaunched is to run our alias `reload` in a terminal window (this only effects reloading of the current window not all terminal windows)
 - Set reasonable [OSX defaults][osxdefaults]
-- Ruby (optional; if you want to use the built-in [Rbenv](https://github.com/rbenv/rbenv) support): `brew install rbenv ruby-build`
-- Elixir (optional; if you want to use the built-in [Exenv](https://github.com/mururu/exenv) support): `brew install exenv elixir-build`
+- [asdf][asdf] extendable version manager
+  - Ruby: `asdf plugin-add ruby && asdf install ruby | cat .ruby-version`
+  - Might want to create a `~/.tool-versions` file with base versions set. Project level `.tool-versions` files will override the defaults.
+  - You can use legacy files for versions (.ruby-version) by setting `legacy_version_file = yes` in a `~/.asdfrc` config file.
 
 ## Settings
 
@@ -24,9 +26,10 @@ The Bash setup is fairly bare bones out of the box. To override or add
 any additional settings create a `~/.bashrc.local` file and add
 any customization.
 
-The default Bash settings support the [rbenv][rbenv] environment.
+The default Bash settings support the [asdf][asdf] environment.
 
 ### Git credentials
+
 To setup your git credentials correctly you'll need to add a `.gitconfig.local`
 file to your `$HOME` directory and add the following:
 
@@ -69,7 +72,7 @@ add this to the `GIT_SIGNING_KEY` in your `.bashrc.local` file.
 You will also need to make your GPG signing key the primary one. You can do this
 by opening up GPG Keychain and doing these steps:
 
-- select your key 
+- select your key
 - hit the details button
 - select User IDs from the menu
 - right click on your user id and select primary
@@ -109,7 +112,8 @@ The control key is in an awkward position and the caps lock key is
 basically useless. It's right there in the home row, so you might as
 well put it to good use.
 
-1. Open up System Preferences
+1.  Open up System Preferences
+
 - Select `Keyboard`
 - Select `Modifier Keys`
 - From the drop down, select `^ Control` under the `Caps Lock` setting
@@ -120,13 +124,12 @@ well put it to good use.
 To get full mouse support (scrolling, clicking, etc...) within Terminal
 Vim, install the [SIMBL][simbl] [MouseTerm][mouseterm] plug-in.
 
-
 <!-- Markdown links -->
+
+[asdf]: https://github.com/asdf-vm/asdf
 [mouseterm]: https://bitheap.org/mouseterm/
 [osxdefaults]: http://mths.be/osx
-[rbenv]: https://github.com/rbenv/rbenv
 [simbl]: http://www.culater.net/software/SIMBL/SIMBL.php
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pigment]: https://github.com/mkitt/pigment
 [vimrc]: /dots/vimrc
-
