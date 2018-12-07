@@ -15,7 +15,6 @@ Plug 'mkitt/pigment'
 Plug 'mkitt/tabline.vim'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-Plug 'Quramy/tsuquyomi'
 Plug 'scrooloose/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'ton/vim-bufsurf'
@@ -123,17 +122,15 @@ if executable('rg')
   let g:ctrlp_use_caching=0
 endif
 
-let g:prettier#autoformat=0
-let g:prettier#exec_cmd_async = 1
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gql,*.graphql,*.md,*.vue PrettierAsync
-
 " let g:ale_completion_enabled=1
 " let g:ale_completion_max_suggestions=13
 let g:ale_fix_on_save=1
-let g:ale_fixers={'javascript': ['eslint'], 'typescript': ['tslint']}
-let g:ale_linters={'html': ['tidy']}
+let g:ale_fixers={'javascript': ['prettier', 'eslint'], 'typescript': ['prettier', 'tslint']}
 let g:ale_history_log_output=0
-let g:ale_open_list='on_save'
+let g:ale_keep_list_window_open=0
+let g:ale_linters={'html': ['tidy']}
+" let g:ale_open_list='on_save'
+" let g:ale_set_lists_synchronously=1
 let g:ale_sign_error='☠️'
 let g:ale_sign_warning='⚠️'
 
