@@ -14,7 +14,6 @@ Plug 'mhinz/vim-grepper'
 Plug 'mkitt/pigment'
 Plug 'mkitt/tabline.vim'
 Plug 'nelstrom/vim-visual-star-search'
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'scrooloose/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'ton/vim-bufsurf'
@@ -23,6 +22,7 @@ Plug 'w0rp/ale'
 Plug 'yssl/QFEnter'
 
 " Editing
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -31,11 +31,9 @@ Plug 'tpope/vim-unimpaired'
 " Filetypes
 Plug 'jparise/vim-graphql'
 Plug 'kchmck/vim-coffee-script'
-Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'peitalin/vim-jsx-typescript'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-rails'
 
@@ -43,11 +41,6 @@ Plug 'tpope/vim-rails'
 Plug 'ngmy/vim-rubocop'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-
-" Add local bundles
-if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
-endif
 
 call plug#end()
 
@@ -62,8 +55,7 @@ set autoread
 set backspace=2
 set clipboard=unnamed
 set complete-=i
-set completeopt=longest,menu
-set directory=~/.vim/tmp/swap/
+set completeopt=longest,menu,menuone,preview,noselect,noinsert
 set display+=lastline
 set expandtab
 set hidden
@@ -79,6 +71,7 @@ set nobackup
 set nojoinspaces
 set noshowcmd
 set nostartofline
+set noswapfile
 set nowrap
 set nrformats-=octal
 set number
@@ -122,19 +115,6 @@ if executable('rg')
   let g:ctrlp_use_caching=0
 endif
 
-" let g:ale_completion_enabled=1
-" let g:ale_completion_max_suggestions=13
-let g:ale_fix_on_save=1
-let g:ale_fixers={'javascript': ['prettier', 'eslint'], 'typescript': ['prettier', 'tslint']}
-let g:ale_history_log_output=0
-let g:ale_keep_list_window_open=0
-let g:ale_linters={'html': ['tidy']}
-" let g:ale_open_list='on_save'
-" let g:ale_set_lists_synchronously=1
-let g:ale_sign_error='☠️'
-let g:ale_sign_warning='⚠️'
-
-let g:ctrlp_by_filename=1
 let g:ctrlp_extensions=['line']
 let g:ctrlp_cache_dir=$HOME.'/.vim/tmp/ctrlp/'
 let g:ctrlp_custom_ignore='vendor/bundle\|.bundle\|tmp\|spec/support/fixtures\|docs/api\|public/uploads\|.git$'
@@ -142,30 +122,44 @@ let g:ctrlp_map='<F1>'
 
 let g:ctrlsf_auto_close=0
 
-let g:indexed_search_colors=0
-
-let g:jsx_ext_required=0
-
+let g:netrw_liststyle=3
 let g:NERDTreeWinSize=40
 let g:NERDTreeMinimalUI=1
 let g:NERDTreeAutoDeleteBuffer=1
 let g:NERDTreeMapUpdir='-'
 
-let g:netrw_liststyle=3
+let g:SuperTabLongestEnhanced=1
+let g:SuperTabLongestHighlight=1
+let g:SuperTabDefaultCompletionType='<C-n>'
 
-let g:qfenter_enable_autoquickfix=0
 let g:qfenter_keymap = {}
 let g:qfenter_keymap.vopen = ['<C-v>']
 let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
 let g:qfenter_keymap.topen = ['<C-t>']
 
-let g:SuperTabLongestEnhanced=1
-let g:SuperTabLongestHighlight=1
+let g:ale_close_preview_on_insert=1
+let g:ale_completion_enabled=1
+let g:ale_completion_max_suggestions=13
+let g:ale_fix_on_save=1
+let g:ale_fixers={'javascript': ['eslint', 'prettier'], 'typescript': ['prettier', 'tslint']}
+let g:ale_history_log_output=0
+let g:ale_javascript_eslint_executable='eslint_d'
+let g:ale_javascript_eslint_use_global=1
+let g:ale_keep_list_window_open=0
+let g:ale_linters={'html': ['tidy']}
+" let g:ale_open_list='on_save'
+let g:ale_set_balloons=1
+let g:ale_sign_error='☠️'
+let g:ale_sign_warning='⚠️'
 
-let g:vimrubocop_config='.rubocop.yml'
+let g:javascript_plugin_flow=1
 
 let g:yankring_window_height=10
 let g:yankring_history_dir=$HOME.'/.vim/tmp/yankring/'
+
+let g:indexed_search_colors=0
+
+let g:vimrubocop_config='.rubocop.yml'
 
 " Mappings
 " -----------------------------------------------------------------------------
@@ -203,7 +197,13 @@ noremap <F11> :BufSurfBack<CR>
 noremap <F12> :BufSurfForward<CR>
 
 " The `g` commands (testing)
-nnoremap <silent>gF :vertical wincmd f<CR>
+nmap gad <Plug>(ale_documentation)
+nmap gaf <Plug>(ale_find_references)
+nmap gan <Plug>(ale_next_wrap)
+nmap gap <Plug>(ale_previous_wrap)
+nmap gf <Plug>(ale_go_to_definition)
+nmap gF <Plug>(ale_go_to_definition_in_vsplit)
+nmap gh <Plug>(ale_hover)
 nnoremap <silent>gl :CtrlP<CR>
 nnoremap <silent>gL :CtrlPBuffer<CR>
 nnoremap <silent>gy :NERDTreeToggle<CR>
@@ -217,6 +217,9 @@ nnoremap <silent>gV `[v`]
 
 " Clear the search highlight
 noremap <silent><leader>\ :nohlsearch<CR>
+
+" Hide the quickfix window (ALE)
+noremap <silent><leader>] :lcl<CR>
 
 " Remove whitespace
 noremap <silent><leader>CW :%s/\s\+$//<CR>
@@ -235,23 +238,20 @@ endfunc
 if has("autocmd")
   augroup FTOptions
     autocmd!
-    autocmd User Grepper :resize 10
-    autocmd QuickFixCmdPost *grep* botright copen
-    autocmd FileType markdown,text,txt setlocal tw=80 linebreak nolist wrap spell
-    autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-    autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-    autocmd BufRead,BufNewFile .{babel,eslint}rc set filetype=json
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
+    autocmd BufRead,BufNewFile *.ts set filetype=javascript
+    autocmd BufRead,BufNewFile *.tsx set filetype=javascript.jsx
     autocmd BufRead,BufNewFile .env.* set filetype=sh
-    autocmd BufRead,BufNewFile *.{flow} set filetype=javascript
-    autocmd BufRead,BufNewFile Dangerfile set filetype=ruby
-    autocmd BufRead,BufNewFile *.{hamlc,slim} set filetype=haml
-    autocmd BufRead,BufNewFile *.tsx,*.jsx set filetype=typescript.jsx
+    autocmd BufRead,BufNewFile .{*}rc set filetype=json
+    autocmd BufRead,BufNewFile COMMIT_EDITMSG setlocal spell
+    autocmd FileType markdown,text,txt setlocal tw=80 linebreak nolist wrap spell
+    autocmd QuickFixCmdPost *grep* botright copen
+    autocmd QuitPre * if empty(&buftype) | lclose | endif
+    autocmd User Grepper :resize 10
 
     " Abbreviations
-    autocmd FileType javascript iabbrev <buffer> bgc backgroundColor: '',<Left><Left><C-R>=Eatchar('\s')<CR>
-    autocmd FileType typescript iabbrev <buffer> bgc backgroundColor: '',<Left><Left><C-R>=Eatchar('\s')<CR>
-    autocmd FileType javascript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
-    autocmd FileType typescript iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
+    autocmd FileType javascript,javascript.jsx iabbrev <buffer> bgc backgroundColor: '',<Left><Left><C-R>=Eatchar('\s')<CR>
+    autocmd FileType javascript,javascript.jsx iabbrev <buffer> cdl console.log()<Left><C-R>=Eatchar('\s')<CR>
   augroup END
 endif
 
